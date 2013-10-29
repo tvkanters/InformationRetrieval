@@ -45,7 +45,7 @@ public class Initialiser {
         // Repeatedly ask the user for search queries
         final Scanner inputReader = new Scanner(System.in);
         while (true) {
-            System.out.print("Google Search: ");
+            System.out.print("Tiphlu Search: ");
             final String query = inputReader.nextLine();
 
             // Decide what to do with the input

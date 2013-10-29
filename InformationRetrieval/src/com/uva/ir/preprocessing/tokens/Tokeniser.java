@@ -15,5 +15,6 @@ public interface Tokeniser {
      * 
      * @return The tokens from within the query
      */
-    public List<String> retrieveTokens(final String query);
+    public List<String> retrieveTokens(final String contents);
+
 }

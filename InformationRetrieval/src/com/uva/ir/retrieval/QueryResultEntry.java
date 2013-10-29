@@ -43,4 +43,12 @@ public class QueryResultEntry {
     public double getScore() {
         return mScore;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return mDocument.getName() + "  -  " + mScore;
+    }
 }

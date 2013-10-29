@@ -1,11 +1,13 @@
 package com.uva.ir.indexing;
 
-import java.io.File;
+import java.util.List;
+
+import com.uva.ir.model.Document;
 
 /**
  * The interface for indexing types.
  */
-public interface Indexer {
+public class Indexer {
 
     /**
      * Creates an inverted index based on the specified files.
@@ -15,6 +17,15 @@ public interface Indexer {
      * 
      * @return The inverted index
      */
-    public InvertedIndex createInvertedIndex(File[] files);
+    public static InvertedIndex createInvertedIndex(List<Document> documentList) {
+        final InvertedIndex invertedIndex = new InvertedIndex();
 
+        for (final Document document : documentList) {
+            for (final String term : document.getTermPositions().keySet()) {
+                invertedIndex.add(term, document);
+            }
+        }
+
+        return invertedIndex;
+    }
 }

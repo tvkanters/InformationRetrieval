@@ -18,18 +18,29 @@ public class InvertedIndex {
     /** All documents within the inverted index */
     private final List<Document> mDocumentList;
 
+    /** The average size of all documents within the index */
+    private final double mAverageDocumentSize;
+
     /**
      * Prepares a new inverted index for the specified list for documents.
+     * 
+     * @param documentList
+     *            The documents that should be indexed
      */
     public InvertedIndex(final List<Document> documentList) {
         mDocumentList = documentList;
 
         // Index the documents
+        long documentSize = 0;
         for (final Document document : documentList) {
+            documentSize += document.getDocumentSize();
+
             for (final String term : document.getTermPositions().keySet()) {
                 add(term, document);
             }
         }
+
+        mAverageDocumentSize = documentSize / documentList.size();
     }
 
     /**
@@ -70,6 +81,15 @@ public class InvertedIndex {
      */
     public List<Document> getDocuments() {
         return mDocumentList;
+    }
+
+    /**
+     * Retrieves the average size of all documents that the index contains.
+     * 
+     * @return The average document size
+     */
+    public double getAverageDocumentSize() {
+        return mAverageDocumentSize;
     }
 
 }

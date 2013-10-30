@@ -101,6 +101,16 @@ public class Document {
     }
 
     /**
+     * Retrieves the size of the document, based on the amount of terms. This includes duplicate
+     * terms.
+     * 
+     * @return The amount of terms in the document
+     */
+    public int getDocumentSize() {
+        return mTermList.size();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

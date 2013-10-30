@@ -10,6 +10,7 @@ import com.uva.ir.indexing.InvertedIndex;
 import com.uva.ir.model.Document;
 import com.uva.ir.retrieval.QueryResultEntry;
 import com.uva.ir.retrieval.Retriever;
+import com.uva.ir.retrieval.models.BM25RetrievalModel;
 import com.uva.ir.retrieval.models.IntersectionRetrievalModel;
 import com.uva.ir.retrieval.models.TfIdfRetrievalModel;
 
@@ -41,7 +42,8 @@ public class Initialiser {
         // Prepare the inverted index and retriever
         final InvertedIndex invertedIndex = new InvertedIndex(documentList);
 //        final Retriever retriever = new Retriever(invertedIndex, new IntersectionRetrievalModel());
-        final Retriever retriever = new Retriever(invertedIndex, new TfIdfRetrievalModel());
+//        final Retriever retriever = new Retriever(invertedIndex, new TfIdfRetrievalModel());
+        final Retriever retriever = new Retriever(invertedIndex, new BM25RetrievalModel());
 
         // Repeatedly ask the user for search queries
         final Scanner inputReader = new Scanner(System.in);

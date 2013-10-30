@@ -37,7 +37,7 @@ public class TfIdfRetrievalModel implements RetrievalModel {
 
             // Get the documents for the term and calculate the idf
             final List<Document> termDocuments = postingsListing.getDocuments();
-            final double idf = Math.log10(documentsAmount / termDocuments.size());
+            final double idf = Math.log10(documentsAmount / (double) termDocuments.size());
 
             // Score each document that contains the term
             for (final Document document : termDocuments) {

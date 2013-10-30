@@ -18,7 +18,7 @@ public class Document {
     /** The name of the document */
     private final String mName;
 
-    /** The contents of the document */
+    /** The contents of the document, not important to store, but can't hurt for now */
     private final String mContents;
 
     /** The list of the terms within the document */
@@ -86,6 +86,18 @@ public class Document {
      */
     public Map<String, List<Integer>> getTermPositions() {
         return mTermPositions;
+    }
+
+    /**
+     * Retrieves the amount of times that the term occurs in this document.
+     * 
+     * @param term
+     *            The term to check for
+     * 
+     * @return The amount of times that the term occurs
+     */
+    public int getTermFrequency(final String term) {
+        return mTermPositions.get(term).size();
     }
 
     /**

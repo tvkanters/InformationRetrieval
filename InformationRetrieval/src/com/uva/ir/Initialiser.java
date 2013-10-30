@@ -6,12 +6,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-import com.uva.ir.indexing.Indexer;
 import com.uva.ir.indexing.InvertedIndex;
 import com.uva.ir.model.Document;
 import com.uva.ir.retrieval.QueryResultEntry;
 import com.uva.ir.retrieval.Retriever;
 import com.uva.ir.retrieval.models.IntersectionRetrievalModel;
+import com.uva.ir.retrieval.models.TfIdfRetrievalModel;
 
 /**
  * Prepares the search program and asks the user for input.
@@ -39,8 +39,9 @@ public class Initialiser {
         }
 
         // Prepare the inverted index and retriever
-        final InvertedIndex invertedIndex = Indexer.createInvertedIndex(documentList);
-        final Retriever retriever = new Retriever(invertedIndex, new IntersectionRetrievalModel());
+        final InvertedIndex invertedIndex = new InvertedIndex(documentList);
+//        final Retriever retriever = new Retriever(invertedIndex, new IntersectionRetrievalModel());
+        final Retriever retriever = new Retriever(invertedIndex, new TfIdfRetrievalModel());
 
         // Repeatedly ask the user for search queries
         final Scanner inputReader = new Scanner(System.in);
@@ -50,7 +51,7 @@ public class Initialiser {
 
             // Decide what to do with the input
             if (query.equals("")) {
-                System.err.println("KEINE INPUT!");
+                System.err.println("KEIN INPUT!");
                 System.out.println();
 
             } else if (query.equals(CMD_QUIT)) {
@@ -59,7 +60,12 @@ public class Initialiser {
             } else {
                 // Execute the specified query
                 final List<QueryResultEntry> results = retriever.executeQuery(query);
-                System.out.println(results.size());
+                
+                for (final QueryResultEntry result : results) {
+                    System.out.println(result);
+                }
+                
+                System.out.println("Amount of results: " + results.size());
                 System.out.println();
 
                 break;

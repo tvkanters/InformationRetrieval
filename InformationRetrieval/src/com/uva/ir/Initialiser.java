@@ -50,7 +50,7 @@ public class Initialiser {
 
             // Decide what to do with the input
             if (query.equals("")) {
-                System.err.println("KEINE INPUT!");
+                System.err.println("KEIN INPUT!");
                 System.out.println();
 
             } else if (query.equals(CMD_QUIT)) {

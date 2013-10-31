@@ -1,5 +1,6 @@
 package com.uva.ir.retrieval.models;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -57,30 +58,14 @@ public class BM25RetrievalModel implements RetrievalModel {
                 final double score = idf * (tf * (K + 1))
                         / (K * ((1 - B) + B * document.getDocumentSize() / averageDocumentSize * tf));
                 documentScores.put(document, documentScores.get(document) + score);
-
             }
         }
 
-        // Put the documents in the order of the scores
+        // Put the documents as results in the order of the scores
         for (final Document document : documentScores.keySet()) {
-            final double score = documentScores.get(document);
-            boolean inserted = false;
-
-            for (int i = 0; i < results.size(); ++i) {
-                // If the new score is better, add the new document before the other
-                if (score > results.get(i).getScore()) {
-                    results.add(i, new QueryResultEntry(document, score));
-
-                    inserted = true;
-                    break;
-                }
-            }
-
-            // If we haven't inserted the document yet, add it at the end
-            if (!inserted) {
-                results.add(new QueryResultEntry(document, score));
-            }
+            results.add(new QueryResultEntry(document, documentScores.get(document)));
         }
+        Collections.sort(results);
 
         return results;
     }

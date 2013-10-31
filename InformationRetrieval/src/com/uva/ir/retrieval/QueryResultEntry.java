@@ -5,7 +5,7 @@ import com.uva.ir.model.Document;
 /**
  * A structure for a single query result.
  */
-public class QueryResultEntry {
+public class QueryResultEntry implements Comparable<QueryResultEntry> {
 
     /** The document which the result refers to */
     private final Document mDocument;
@@ -19,7 +19,7 @@ public class QueryResultEntry {
      * @param document
      *            The document the result refers to
      * @param score
-     *            THe score this reuslt has received
+     *            The score this result has received
      */
     public QueryResultEntry(final Document document, final double score) {
         mDocument = document;
@@ -50,5 +50,20 @@ public class QueryResultEntry {
     @Override
     public String toString() {
         return mDocument.getName() + "  -  " + mScore;
+    }
+
+    /**
+     * Compares this result to the specified one and returns the relation based on each result's
+     * score.
+     * 
+     * @param comparative
+     *            The result to compare this one to
+     * 
+     * @return 0 if the scores are equal, -1 if this result's score is better and 1 if this result's
+     *         score is worse
+     */
+    @Override
+    public int compareTo(final QueryResultEntry comparative) {
+        return (mScore > comparative.mScore ? -1 : (mScore == comparative.mScore ? 0 : 1));
     }
 }

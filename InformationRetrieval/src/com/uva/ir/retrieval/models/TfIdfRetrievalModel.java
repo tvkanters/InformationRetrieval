@@ -30,9 +30,9 @@ public class TfIdfRetrievalModel implements RetrievalModel {
         for (final String term : invertedIndex.getPreprocessor().getTerms(query)) {
             final PostingsListing postingsListing = invertedIndex.get(term);
 
-            // If a term is not found, we cannot return any results
+            // If a term is not found, skip the scoring for it
             if (postingsListing == null) {
-                return results;
+                continue;
             }
 
             // Get the documents for the term and calculate the idf

@@ -25,14 +25,12 @@ public class Initialiser {
     private final static String CMD_QUIT = "quit";
 
     public static void main(String[] args) {
-        
+
         // Collect the files to index and search through
         final File[] files = new File(COLLECTION_FOLDER).listFiles();
 
         // Prepare the inverted index and retriever
         final InvertedIndex invertedIndex = new InvertedIndex(new SimplePreprocessor(), files);
-//        final Retriever retriever = new Retriever(invertedIndex, new IntersectionRetrievalModel());
-//        final Retriever retriever = new Retriever(invertedIndex, new TfIdfRetrievalModel());
         final Retriever retriever = new Retriever(invertedIndex, new BM25RetrievalModel());
 
         // Repeatedly ask the user for search queries
@@ -52,11 +50,11 @@ public class Initialiser {
             } else {
                 // Execute the specified query
                 final List<QueryResultEntry> results = retriever.executeQuery(query);
-                
+
                 for (final QueryResultEntry result : results) {
                     System.out.println(result);
                 }
-                
+
                 System.out.println("Amount of results: " + results.size());
                 System.out.println();
 

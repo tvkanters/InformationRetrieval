@@ -30,16 +30,18 @@ public class Document {
     /**
      * Prepares a new document for the specified file.
      * 
+     * @param preprocessor
+     *            The preprocessor used to parse the file
      * @param file
      *            The file used for the document
      * 
      * @throws IOException
      *             Thrown when the file cannot have its contents read
      */
-    public Document(final File file) throws IOException {
+    public Document(final Preprocessor preprocessor, final File file) throws IOException {
         mName = file.getName();
         mContents = FileManager.getFileContents(file);
-        mTermList = Preprocessor.getTerms(mContents);
+        mTermList = preprocessor.getTerms(mContents);
 
         // Find the positions of each term and save them for later use
         int i = 0;

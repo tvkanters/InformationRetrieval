@@ -6,7 +6,6 @@ import java.util.List;
 import com.uva.ir.indexing.InvertedIndex;
 import com.uva.ir.model.Document;
 import com.uva.ir.model.PostingsListing;
-import com.uva.ir.preprocessing.Preprocessor;
 import com.uva.ir.retrieval.QueryResultEntry;
 
 /**
@@ -23,7 +22,7 @@ public class IntersectionRetrievalModel implements RetrievalModel {
 
         // Find the documents that match the terms
         List<Document> documents = null;
-        for (final String term : Preprocessor.getTerms(query)) {
+        for (final String term : invertedIndex.getPreprocessor().getTerms(query)) {
             final PostingsListing postingListing = invertedIndex.get(term);
             if (postingListing != null) {
                 final List<Document> tempDocuments = postingListing.getDocuments();

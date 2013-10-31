@@ -1,18 +1,14 @@
 package com.uva.ir;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
 import com.uva.ir.indexing.InvertedIndex;
-import com.uva.ir.model.Document;
+import com.uva.ir.preprocessing.SimplePreprocessor;
 import com.uva.ir.retrieval.QueryResultEntry;
 import com.uva.ir.retrieval.Retriever;
 import com.uva.ir.retrieval.models.BM25RetrievalModel;
-import com.uva.ir.retrieval.models.IntersectionRetrievalModel;
-import com.uva.ir.retrieval.models.TfIdfRetrievalModel;
 
 /**
  * Prepares the search program and asks the user for input.
@@ -29,18 +25,12 @@ public class Initialiser {
     private final static String CMD_QUIT = "quit";
 
     public static void main(String[] args) {
-        // Collect the documents
-        final List<Document> documentList = new LinkedList<>();
-        for (final File fileEntry : new File(COLLECTION_FOLDER).listFiles()) {
-            try {
-                documentList.add(new Document(fileEntry));
-            } catch (IOException ex) {
-                System.err.println("Failed to load: " + fileEntry);
-            }
-        }
+        
+        // Collect the files to index and search through
+        final File[] files = new File(COLLECTION_FOLDER).listFiles();
 
         // Prepare the inverted index and retriever
-        final InvertedIndex invertedIndex = new InvertedIndex(documentList);
+        final InvertedIndex invertedIndex = new InvertedIndex(new SimplePreprocessor(), files);
 //        final Retriever retriever = new Retriever(invertedIndex, new IntersectionRetrievalModel());
 //        final Retriever retriever = new Retriever(invertedIndex, new TfIdfRetrievalModel());
         final Retriever retriever = new Retriever(invertedIndex, new BM25RetrievalModel());

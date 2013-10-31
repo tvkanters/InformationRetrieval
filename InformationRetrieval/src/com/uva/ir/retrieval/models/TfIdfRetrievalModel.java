@@ -8,7 +8,6 @@ import java.util.Map;
 import com.uva.ir.indexing.InvertedIndex;
 import com.uva.ir.model.Document;
 import com.uva.ir.model.PostingsListing;
-import com.uva.ir.preprocessing.Preprocessor;
 import com.uva.ir.retrieval.QueryResultEntry;
 
 /**
@@ -27,7 +26,7 @@ public class TfIdfRetrievalModel implements RetrievalModel {
         final int documentsAmount = invertedIndex.getDocuments().size();
 
         // Score documents for each term
-        for (final String term : Preprocessor.getTerms(query)) {
+        for (final String term : invertedIndex.getPreprocessor().getTerms(query)) {
             final PostingsListing postingsListing = invertedIndex.get(term);
 
             // If a term is not found, we cannot return any results

@@ -1,22 +1,29 @@
 package com.uva.ir.indexing;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import com.uva.ir.model.Document;
 import com.uva.ir.model.PostingsListing;
+import com.uva.ir.preprocessing.Preprocessor;
 
 /**
  * The index for the dictionary and postings that is created as a result of using an indexer.
  */
 public class InvertedIndex {
 
+    /** The preprocessor used for parsing the documents in this index */
+    private final Preprocessor mPreprocessor;
+
     /** The mapping from each term to its postings information */
     private final Map<String, PostingsListing> mTermMapping = new HashMap<>();
 
     /** All documents within the inverted index */
-    private final List<Document> mDocumentList;
+    private final List<Document> mDocuments = new LinkedList<>();
 
     /** The average size of all documents within the index */
     private final double mAverageDocumentSize;
@@ -24,15 +31,26 @@ public class InvertedIndex {
     /**
      * Prepares a new inverted index for the specified list for documents.
      * 
-     * @param documentList
+     * @param preprocessor
+     *            The preprocessor to be used for parsing the documents
+     * @param files
      *            The documents that should be indexed
      */
-    public InvertedIndex(final List<Document> documentList) {
-        mDocumentList = documentList;
+    public InvertedIndex(final Preprocessor preprocessor, final File[] files) {
+        mPreprocessor = preprocessor;
 
-        // Index the documents
+        // Index the files as documents
         long documentSize = 0;
-        for (final Document document : documentList) {
+        for (final File file : files) {
+            final Document document;
+            try {
+                document = new Document(preprocessor, file);
+            } catch (IOException ex) {
+                System.err.println("Failed to load: " + file);
+                continue;
+            }
+
+            mDocuments.add(document);
             documentSize += document.getDocumentSize();
 
             for (final String term : document.getTermPositions().keySet()) {
@@ -40,7 +58,7 @@ public class InvertedIndex {
             }
         }
 
-        mAverageDocumentSize = documentSize / documentList.size();
+        mAverageDocumentSize = documentSize / files.length;
     }
 
     /**
@@ -51,7 +69,7 @@ public class InvertedIndex {
      * @param document
      *            The document to add
      */
-    public void add(final String term, final Document document) {
+    private void add(final String term, final Document document) {
         PostingsListing postingsListing = mTermMapping.get(term);
 
         if (postingsListing == null) {
@@ -60,6 +78,15 @@ public class InvertedIndex {
         }
 
         postingsListing.add(document);
+    }
+
+    /**
+     * Retrieves preprocessor used for parsing the documents in this index.
+     * 
+     * @return The index's preprocessor
+     */
+    public Preprocessor getPreprocessor() {
+        return mPreprocessor;
     }
 
     /**
@@ -80,7 +107,7 @@ public class InvertedIndex {
      * @return The index's documents
      */
     public List<Document> getDocuments() {
-        return mDocumentList;
+        return mDocuments;
     }
 
     /**

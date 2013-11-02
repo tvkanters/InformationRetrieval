@@ -55,7 +55,8 @@ public class BM25RetrievalModel implements RetrievalModel {
 
                 // Add the BM25 score to the document's score
                 final double tf = document.getTermFrequency(term);
-                final double score = idf * (tf * (K + 1))
+                final double score = idf
+                        * (tf * (K + 1))
                         / (K * ((1 - B) + B * document.getDocumentSize() / averageDocumentSize * tf));
                 documentScores.put(document, documentScores.get(document) + score);
             }
@@ -70,4 +71,8 @@ public class BM25RetrievalModel implements RetrievalModel {
         return results;
     }
 
+    @Override
+    public String getModelName() {
+        return "BM25 with B:" + B + " K: " + K;
+    }
 }

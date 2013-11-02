@@ -11,6 +11,13 @@ import java.nio.file.Files;
  */
 public class FileManager {
 
+    /** The folder containing all the assets */
+    public final static String ASSETS_FOLDER = "assets/";
+
+    /** The folder containing the sample documents */
+    public final static String COLLECTION_FOLDER = ASSETS_FOLDER + "collection/";
+	
+	
     /**
      * Retrieves the contents from the specified file.
      * 

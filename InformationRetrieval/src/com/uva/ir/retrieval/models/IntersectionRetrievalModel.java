@@ -49,4 +49,9 @@ public class IntersectionRetrievalModel implements RetrievalModel {
 
         return results;
     }
+
+    @Override
+    public String getModelName() {
+        return "Intersection Retrieval";
+    }
 }

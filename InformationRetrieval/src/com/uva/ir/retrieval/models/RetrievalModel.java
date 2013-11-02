@@ -22,4 +22,10 @@ public interface RetrievalModel {
      */
     public List<QueryResultEntry> executeQuery(final InvertedIndex invertedIndex, final String query);
 
+    /**
+     * The name of the retrieval model
+     * 
+     * @return The name of the retrieval model
+     */
+    public String getModelName();
 }

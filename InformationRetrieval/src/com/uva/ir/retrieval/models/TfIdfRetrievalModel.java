@@ -62,4 +62,8 @@ public class TfIdfRetrievalModel implements RetrievalModel {
         return results;
     }
 
+    @Override
+    public String getModelName() {
+        return "Tf-Idf";
+    }
 }

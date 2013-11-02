@@ -9,17 +9,12 @@ import com.uva.ir.preprocessing.SimplePreprocessor;
 import com.uva.ir.retrieval.QueryResultEntry;
 import com.uva.ir.retrieval.Retriever;
 import com.uva.ir.retrieval.models.BM25RetrievalModel;
+import com.uva.ir.utils.FileManager;
 
 /**
  * Prepares the search program and asks the user for input.
  */
 public class Initialiser {
-
-    /** The folder containing all the assets */
-    private final static String ASSETS_FOLDER = "assets/";
-
-    /** The folder containing the sample documents */
-    private final static String COLLECTION_FOLDER = ASSETS_FOLDER + "collection/";
 
     /** The command to quit the search */
     private final static String CMD_QUIT = "quit";
@@ -27,7 +22,7 @@ public class Initialiser {
     public static void main(String[] args) {
 
         // Collect the files to index and search through
-        final File[] files = new File(COLLECTION_FOLDER).listFiles();
+        final File[] files = new File(FileManager.COLLECTION_FOLDER).listFiles();
 
         // Prepare the inverted index and retriever
         final InvertedIndex invertedIndex = new InvertedIndex(new SimplePreprocessor(), files);

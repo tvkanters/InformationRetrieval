@@ -12,7 +12,7 @@ public class Vector {
      * Prepares a new vector with the specified data.
      * 
      * @param data
-     *            Tha data that the vector contains
+     *            The data that the vector contains
      */
     public Vector(final double[] data) {
         mData = data;

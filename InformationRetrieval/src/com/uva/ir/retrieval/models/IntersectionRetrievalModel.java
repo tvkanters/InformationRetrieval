@@ -9,7 +9,7 @@ import com.uva.ir.model.PostingsListing;
 import com.uva.ir.retrieval.QueryResultEntry;
 
 /**
- * The model that retrieves results ranked according to the tf-idf model.
+ * The model that retrieves results according to the intersection (binary) retrieval model
  */
 public class IntersectionRetrievalModel implements RetrievalModel {
 

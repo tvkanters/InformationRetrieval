@@ -99,7 +99,7 @@ public class Document {
      * @return The amount of times that the term occurs
      */
     public int getTermFrequency(final String term) {
-        return mTermPositions.get(term).size();
+        return (mTermPositions.containsKey(term) ? mTermPositions.get(term).size() : 0);
     }
 
     /**

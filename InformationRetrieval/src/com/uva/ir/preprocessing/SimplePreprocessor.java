@@ -10,7 +10,7 @@ import com.uva.ir.preprocessing.tokens.Tokeniser;
 /**
  * Performs the preprocessing tasks for indexing and retrieval.
  */
-public class SimplePreprocessor implements Preprocessor {
+public class SimplePreprocessor extends Preprocessor {
 
     /** The tokeniser used to turn the contents into tokens */
     private final Tokeniser mTokeniser = new SimpleTokeniser();

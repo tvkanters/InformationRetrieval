@@ -6,10 +6,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.uva.ir.model.Document;
 import com.uva.ir.model.PostingsListing;
 import com.uva.ir.preprocessing.Preprocessor;
+import com.uva.ir.utils.Vector;
 
 /**
  * The index for the dictionary and postings that is created as a result of using an indexer.
@@ -117,6 +119,53 @@ public class InvertedIndex {
      */
     public double getAverageDocumentSize() {
         return mAverageDocumentSize;
+    }
+
+    /**
+     * Creates a vector for the specified document based on the dimensions of the inverted index
+     * terms. Each dimension will be specified by how many time the term occurs in the document.
+     * 
+     * @param document
+     *            The document to represent as a vector
+     * 
+     * @return The document in vector form
+     */
+    public Vector getVector(final Document document) {
+        final Set<String> keys = mTermMapping.keySet();
+        double[] data = new double[keys.size()];
+
+        int i = 0;
+        for (final String term : mTermMapping.keySet()) {
+            data[i++] = document.getTermFrequency(term);
+        }
+
+        return new Vector(data);
+    }
+
+    /**
+     * Creates a vector for the specified query based on the dimensions of the inverted index terms.
+     * Each dimension will be specified by how many time the term occurs in the query.
+     * 
+     * @param query
+     *            The query to represent as a vector
+     * 
+     * @return The query in vector form
+     */
+    public Vector getVector(final String query) {
+        final Map<String, Integer> termFrequencies = mPreprocessor.getTermFrequencies(query);
+        final Set<String> keys = mTermMapping.keySet();
+        double[] data = new double[keys.size()];
+
+        int i = 0;
+        for (final String term : mTermMapping.keySet()) {
+            if (termFrequencies.containsKey(term)) {
+                data[i] = termFrequencies.get(term);
+            }
+
+            ++i;
+        }
+
+        return new Vector(data);
     }
 
 }

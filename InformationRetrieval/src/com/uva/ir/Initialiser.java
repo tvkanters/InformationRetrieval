@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.uva.ir.indexing.InvertedIndex;
+import com.uva.ir.model.Document;
+import com.uva.ir.model.PostingsListing;
 import com.uva.ir.preprocessing.SimplePreprocessor;
 import com.uva.ir.retrieval.QueryResultEntry;
 import com.uva.ir.retrieval.Retriever;
@@ -18,6 +20,7 @@ public class Initialiser {
 
     /** The command to quit the search */
     private final static String CMD_QUIT = "quit";
+    private final static String CMD_SAVE = "/save";
 
     public static void main(String[] args) {
 
@@ -38,7 +41,24 @@ public class Initialiser {
             if (query.equals("")) {
                 System.err.println("KEIN INPUT!");
                 System.out.println();
-
+                
+            } else if (query.equals(CMD_SAVE)) {
+                int totalTermFrequency = 0;
+                for (Document doc : invertedIndex.getDocuments()) {
+                    totalTermFrequency += doc.getDocumentSize();
+                }
+                System.out.println("The total number of tokens in the collection:  "+totalTermFrequency);
+                
+                System.out.println("The number of unique terms: "+invertedIndex.getNumberOfTerms());
+                
+                PostingsListing ofPosting = invertedIndex.get("of");
+                int totalCount = 0;
+                for (Document doc : ofPosting.getDocuments()) {
+                    totalCount += doc.getTermFrequency("of");
+                }
+                System.out.println("Total count of the token \"of\": "+totalCount);
+               // total number of tokens, unique tokens, total count of the token "of"
+                
             } else if (query.equals(CMD_QUIT)) {
                 break;
 

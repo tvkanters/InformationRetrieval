@@ -167,5 +167,14 @@ public class InvertedIndex {
 
         return new Vector(data);
     }
+    
+    /**
+     * Returns the number of unique terms in the inverted index
+     * 
+     * @return The number of terms
+     */
+    public int getNumberOfTerms() {
+        return mTermMapping.size();
+    }
 
 }

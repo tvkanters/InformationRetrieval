@@ -8,6 +8,7 @@ import com.uva.ir.indexing.InvertedIndex;
 import com.uva.ir.model.Document;
 import com.uva.ir.model.PostingsListing;
 import com.uva.ir.preprocessing.SimplePreprocessor;
+import com.uva.ir.preprocessing.StemmingPreprocessor;
 import com.uva.ir.retrieval.QueryResultEntry;
 import com.uva.ir.retrieval.Retriever;
 import com.uva.ir.retrieval.models.VectorSpaceRetrievalModel;
@@ -28,7 +29,7 @@ public class Initialiser {
         final File[] files = new File(FileManager.COLLECTION_FOLDER).listFiles();
 
         // Prepare the inverted index and retriever
-        final InvertedIndex invertedIndex = new InvertedIndex(new SimplePreprocessor(), files);
+        final InvertedIndex invertedIndex = new InvertedIndex(new StemmingPreprocessor(), files);
         final Retriever retriever = new Retriever(invertedIndex, new VectorSpaceRetrievalModel());
 
         // Repeatedly ask the user for search queries

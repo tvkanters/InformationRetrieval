@@ -41,24 +41,28 @@ public class Initialiser {
             if (query.equals("")) {
                 System.err.println("KEIN INPUT!");
                 System.out.println();
-                
+
             } else if (query.equals(CMD_SAVE)) {
+                // Find the total number of terms within the index
                 int totalTermFrequency = 0;
-                for (Document doc : invertedIndex.getDocuments()) {
-                    totalTermFrequency += doc.getDocumentSize();
+                for (final Document document : invertedIndex.getDocuments()) {
+                    totalTermFrequency += document.getDocumentSize();
                 }
-                System.out.println("The total number of tokens in the collection:  "+totalTermFrequency);
-                
-                System.out.println("The number of unique terms: "+invertedIndex.getNumberOfTerms());
-                
-                PostingsListing ofPosting = invertedIndex.get("of");
+                System.out.println("The total number of tokens in the collection: "
+                        + totalTermFrequency);
+
+                // Print the amount of different terms in the index
+                System.out.println("The number of unique terms: "
+                        + invertedIndex.getNumberOfTerms());
+
+                // Find the amount of times that the word 'of' occurs
+                final PostingsListing ofPosting = invertedIndex.get("of");
                 int totalCount = 0;
-                for (Document doc : ofPosting.getDocuments()) {
-                    totalCount += doc.getTermFrequency("of");
+                for (final Document document : ofPosting.getDocuments()) {
+                    totalCount += document.getTermFrequency("of");
                 }
-                System.out.println("Total count of the token \"of\": "+totalCount);
-               // total number of tokens, unique tokens, total count of the token "of"
-                
+                System.out.println("Total count of the token \"of\": " + totalCount);
+
             } else if (query.equals(CMD_QUIT)) {
                 break;
 

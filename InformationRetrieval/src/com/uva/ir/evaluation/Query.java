@@ -10,8 +10,8 @@ import com.uva.ir.utils.FileManager;
 public class Query {
 
     public enum QueryID {
-        QUERY_6(6),
-        QUERY_7(7);
+        QUERY_6(1),
+        QUERY_7(2);
 
         private final int id;
 

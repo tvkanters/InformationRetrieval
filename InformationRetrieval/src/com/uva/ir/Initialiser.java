@@ -7,14 +7,14 @@ import java.util.Scanner;
 import com.uva.ir.indexing.InvertedIndex;
 import com.uva.ir.model.Document;
 import com.uva.ir.model.PostingsListing;
-import com.uva.ir.preprocessing.SimplePreprocessor;
 import com.uva.ir.preprocessing.StemmingPreprocessor;
 import com.uva.ir.retrieval.QueryResultEntry;
 import com.uva.ir.retrieval.Retriever;
+import com.uva.ir.retrieval.models.BM25RetrievalModel;
 import com.uva.ir.retrieval.models.VectorSpaceRetrievalModel;
 import com.uva.ir.utils.FileManager;
 
-/**
+/** 
  * Prepares the search program and asks the user for input.
  */
 public class Initialiser {
@@ -30,7 +30,7 @@ public class Initialiser {
 
         // Prepare the inverted index and retriever
         final InvertedIndex invertedIndex = new InvertedIndex(new StemmingPreprocessor(), files);
-        final Retriever retriever = new Retriever(invertedIndex, new VectorSpaceRetrievalModel());
+        final Retriever retriever = new Retriever(invertedIndex, new BM25RetrievalModel());
 
         // Repeatedly ask the user for search queries
         final Scanner inputReader = new Scanner(System.in);

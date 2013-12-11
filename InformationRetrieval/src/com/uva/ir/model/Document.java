@@ -62,6 +62,20 @@ public class Document {
     public String getName() {
         return mName;
     }
+    
+    /**
+     * Retrieves the name of the document without the extention.
+     * 
+     * @return The file's name
+     */
+    public String getBaseName() {
+        int suffixStart = mName.lastIndexOf('.');
+        
+        if(suffixStart == -1)
+            return mName;
+        
+        return mName.substring(0, suffixStart);
+    }
 
     /**
      * Retrieves the contents of the document.

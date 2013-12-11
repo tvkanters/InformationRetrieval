@@ -17,11 +17,29 @@ import com.uva.ir.retrieval.QueryResultEntry;
 public class BM25RetrievalModel implements RetrievalModel {
 
     /** The parameter that weighs the document's length, should be between 0 and 1 */
-    private static final double B = 0.5;
+    private final double B;
 
     /** The parameter that weighs the terms according to how common they are */
-    private static final double K = Math.PI;
+    private final double K;
 
+    /**
+     * BM25 with standard values B = 0.11, K = 1
+     */
+    public BM25RetrievalModel() {
+        B = 0.11;
+        K = 1;
+    }
+    
+    /**
+     * BM25 with the given parameters
+     * @param b
+     * @param k
+     */
+    public BM25RetrievalModel(double b, double k) {
+        B = b;
+        K = k;
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -57,7 +75,7 @@ public class BM25RetrievalModel implements RetrievalModel {
                 final double tf = document.getTermFrequency(term);
                 final double score = idf
                         * (tf * (K + 1))
-                        / (K * ((1 - B) + B * document.getDocumentSize() / averageDocumentSize * tf));
+                        / (K * ((1 - B) + B * document.getDocumentSize() / averageDocumentSize) + tf);
                 documentScores.put(document, documentScores.get(document) + score);
             }
         }

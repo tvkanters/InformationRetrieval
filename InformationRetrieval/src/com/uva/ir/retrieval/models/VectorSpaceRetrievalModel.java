@@ -38,7 +38,10 @@ public class VectorSpaceRetrievalModel implements RetrievalModel {
 
         // Put the documents as results in the order of the scores
         for (final Document document : documentScores.keySet()) {
-            results.add(new QueryResultEntry(document, documentScores.get(document)));
+            final double score = documentScores.get(document);
+            if (score > 0) {
+                results.add(new QueryResultEntry(document, score));
+            }
         }
         Collections.sort(results);
 

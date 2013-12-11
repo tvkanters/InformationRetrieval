@@ -26,7 +26,8 @@ import com.uva.ir.retrieval.models.TfIdfRetrievalModel;
 import com.uva.ir.utils.FileManager;
 
 /**
- * A class used for evaluating the results of retrieval models through our own test and TREC's tests.
+ * A class used for evaluating the results of retrieval models through our own test and TREC's
+ * tests.
  */
 public class Evaluator {
 
@@ -35,11 +36,14 @@ public class Evaluator {
         rtModel = new IntersectionRetrievalModel();
         Retriever retriever = generateRetriever(new StemmingPreprocessor(), rtModel);
 
-        createTrecFile(retriever, rtModel);
+        createTrecFile(retriever);
         System.out.println(evaluateWithOfflineTrec());
         // evaluateTrec();
     }
 
+    /**
+     * Use TREC to evaluate the scores of different b and k values in a BM25 search.
+     */
     private static void evaluateTrec() {
 
         double bestResult = 0;
@@ -57,7 +61,7 @@ public class Evaluator {
                 rtModel = new BM25RetrievalModel(b, k);
                 Retriever retriever = generateRetriever(new StemmingPreprocessor(), rtModel);
 
-                createTrecFile(retriever, rtModel);
+                createTrecFile(retriever);
                 double result = evaluateWithOfflineTrec();
 
                 System.out.println("& B: " + b + " K: " + k + " & " + result + " \\\\");
@@ -84,31 +88,41 @@ public class Evaluator {
         System.out.println(worstResult);
     }
 
-    private static void createTrecFile(Retriever retriever, RetrievalModel rtModel) {
+    /**
+     * Perform TREC and save the results to a file.
+     * 
+     * @param retriever
+     *            The retriever model to use
+     */
+    private static void createTrecFile(Retriever retriever) {
         PrintWriter writer;
         try {
             writer = new PrintWriter("trec_eval.9.0/result.txt", "UTF-8");
 
             List<QueryResultEntry> resultList = retriever.executeQuery(Query
                     .getQueryForID(QueryID.QUERY_6));
-            List<String> result = generateTracData(resultList, QueryID.QUERY_6);
+            List<String> result = generateTrecData(resultList, QueryID.QUERY_6);
             for (String s : result) {
                 writer.println(s);
             }
 
             resultList = retriever.executeQuery(Query.getQueryForID(QueryID.QUERY_7));
-            result = generateTracData(resultList, QueryID.QUERY_7);
+            result = generateTrecData(resultList, QueryID.QUERY_7);
             for (String s : result) {
                 writer.println(s);
             }
             writer.close();
 
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
+    /**
+     * Runs TREC evaluation based on offline results.
+     * 
+     * @return The MAP score of the results
+     */
     private static double evaluateWithOfflineTrec() {
         double result = 0;
         try {
@@ -136,6 +150,9 @@ public class Evaluator {
         return result;
     }
 
+    /**
+     * Use our own evaluation method to determine the performance of retrieval methods.
+     */
     private static void evaluateLupti() {
         RetrievalModel rtModel = new BM25RetrievalModel();
         Retriever retriever = generateRetriever(new SimplePreprocessor(), rtModel);
@@ -169,12 +186,13 @@ public class Evaluator {
     }
 
     /**
-     * Generate a retriever model with the given preprocessor and retrievalmodel
+     * Generate a retriever model with the given preprocessor and retrieval model.
      * 
      * @param preprocessor
      *            The preprocessor to be used
      * @param retrievalModel
-     *            The retrievalmodel to be used
+     *            The retrieval model to be used
+     * 
      * @return The generated retriever model
      */
     private static Retriever generateRetriever(final Preprocessor preprocessor,
@@ -184,13 +202,23 @@ public class Evaluator {
         return new Retriever(invertedIndex, retrievalModel);
     }
 
-    // <queryID> Q0 <documentID> <rank> <score> <runID>
-    private static List<String> generateTracData(List<QueryResultEntry> queryResults,
+    /**
+     * Generate results in a way that TREC can parse it.
+     * 
+     * @param queryResults
+     *            The results of the query and retrieval model
+     * @param queryID
+     *            The ID of the query that was executed
+     * 
+     * @return A list of the results in TREC format
+     */
+    private static List<String> generateTrecData(List<QueryResultEntry> queryResults,
             QueryID queryID) {
         List<String> result = new ArrayList<String>();
 
         int rank = 0;
         for (QueryResultEntry q : queryResults) {
+            // <queryID> Q0 <documentID> <rank> <score> <runID>
             result.add(queryID.getValue() + " Q0 " + q.getDocument().getBaseName() + " " + rank++
                     + " " + q.getScore() + " 1");
         }

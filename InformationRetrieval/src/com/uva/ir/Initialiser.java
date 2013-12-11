@@ -11,17 +11,18 @@ import com.uva.ir.preprocessing.StemmingPreprocessor;
 import com.uva.ir.retrieval.QueryResultEntry;
 import com.uva.ir.retrieval.Retriever;
 import com.uva.ir.retrieval.models.BM25RetrievalModel;
-import com.uva.ir.retrieval.models.VectorSpaceRetrievalModel;
 import com.uva.ir.utils.FileManager;
 
-/** 
+/**
  * Prepares the search program and asks the user for input.
  */
 public class Initialiser {
 
     /** The command to quit the search */
-    private final static String CMD_QUIT = "quit";
-    private final static String CMD_SAVE = "/save";
+    private final static String CMD_QUIT = "/quit";
+
+    /** The command to save basic statistics */
+    private final static String CMD_SAVE = "/stats";
 
     public static void main(String[] args) {
 
@@ -77,8 +78,6 @@ public class Initialiser {
 
                 System.out.println("Amount of results: " + results.size());
                 System.out.println();
-
-                break;
             }
         }
         inputReader.close();
